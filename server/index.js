@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
 
+import authRouter from './routes/auth.js'
+
 const app = express();
 dotenv.config();
 
@@ -15,19 +17,13 @@ const DB_PORT = process.env.DB_PORT || 30001
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRouter)
+
 
 async function start(){
     try{
         await mongoose.connect(
-            'mongodb://localhost:27017', 
-            {
-                auth:{
-                    username: DB_USER,
-                    password: DB_PASSWORD
-                },
-                name: DB_NAME
-
-            }
+            `mongodb://${DB_USER}:${DB_PASSWORD}@localhost:27017/${DB_NAME}`
             );
 
             app.listen(DB_PORT, () => console.log(`Server started on port: ${DB_PORT}`));
