@@ -51,9 +51,14 @@ export const authorization = async (req, res) => {
 //Получение данных
 export const getMe = async (req, res) => {
     try {
+        const user = await Users.findById(req.userId);
+
+        if(!user) return res.json({message: 'Такого пользователя не существует!'});
         
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '12d'});
+        res.json({user, token});
     }
     catch(err){
-
+        res.json({message: 'У вас нет доступа!'})
     }
 }

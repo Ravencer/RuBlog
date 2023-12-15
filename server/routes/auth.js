@@ -1,5 +1,6 @@
 import {Router} from 'express'
 import {register, authorization, getMe} from '../controllers/auth.js'
+import { checkToken } from '../utils/checkToken.js'
 
 const router = new Router()
 
@@ -11,6 +12,6 @@ router.post('/register', register)
 router.post('/authorization', authorization)
 
 //Получение своих данных /getMe
-router.get('/my-page', getMe)
+router.get('/my-page', checkToken, getMe)
 
 export default router
