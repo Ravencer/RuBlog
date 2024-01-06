@@ -1,24 +1,33 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { registerUser } from '../redux/features/auth/authSlice'
+import {toast} from 'react-toastify'
+
 
 export const Register = () => {
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const { status } = useSelector((state) => state.auth)
+    console.log(status);
+    const dispatch = useDispatch()
 
-  const handleSubmit = () => {
-    try{
-      dispatch(registerUser({username, password}));
-      setPassword('');
-      setUserName('');
-    }
-    catch(err){
-      console.log(err);
-    }
-  }
 
+    useEffect(() => {
+        if (status) {
+            toast(status)
+        }
+    }, [status])
+
+    const handleSubmit = () => {
+        try {
+            dispatch(registerUser({ username, password }));
+            setPassword('')
+            setUsername('')
+        } catch (error) {
+            console.log(error)
+        }
+    }
   return (
     <form onSubmit={e => e.preventDefault()}
     className='w-1/4 h-60 mx-auto mt-40'>
@@ -27,7 +36,7 @@ export const Register = () => {
         Имя пользователя:
         <input type="text" 
         value={username}
-        onChange={e => setUserName(e.target.value)}
+        onChange={e => setUsername(e.target.value)}
         placeholder='John1' 
         className='mt-1 text-black w-full rounded-lg bg-orange-300 border py-1 px-2 text-sm outline-none placeholder:text-gray-700'/>
       </label>

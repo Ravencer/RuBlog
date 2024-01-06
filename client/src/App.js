@@ -7,6 +7,8 @@ import {CreatePost} from './pages/CreatePost.jsx'
 import {LoginPage} from './pages/LoginPage.jsx'
 import {Register} from './pages/Register.jsx'
 import {EditPost} from './pages/EditPost.jsx'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
         <Route path='register' element={<Register/>} />
         <Route path=':id/edit' element={<EditPost/>} />
       </Routes>
+
+
+      <ToastContainer position='bottom-left' />
     </Layout>
   );
 }
