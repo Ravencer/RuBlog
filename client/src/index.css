@@ -5,5 +5,9 @@
 @layer base{
   body{
     font-family: 'Roboto', sans-serif;
+    background: #F0F8FF;
+    background: -webkit-linear-gradient(to right, #EBF4FA, #F0F8FF);
+    background: linear-gradient(to right, #EBF4FA, #F0F8FF);
+    min-height: 100vh;
   }
 }

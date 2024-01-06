@@ -1,7 +1,13 @@
 import React from 'react'
+import {Navigation} from './Navigation.jsx'
 
-export const Layout = () => {
+export const Layout = ({children}) => {
   return (
-    <div>Layout</div>
+    <React.Fragment>
+      <div className='container mx-auto'>
+        <Navigation/>
+        {children}
+      </div>
+    </React.Fragment>
   )
 }
