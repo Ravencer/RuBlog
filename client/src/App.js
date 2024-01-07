@@ -9,8 +9,16 @@ import {Register} from './pages/Register.jsx'
 import {EditPost} from './pages/EditPost.jsx'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { getUser } from './redux/features/auth/authSlice.js'
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch])
   return (
     <Layout>
       <Routes>
