@@ -50,14 +50,28 @@ export const createPost = async (req, res) => {
 
 export const getAll = async(req, res) => {
     try {
-        const posts = await Posts.find().sort('-createdAt');
-        const popularPosts = await Posts.find().limit(5).sort('-views');
+        const posts = await Posts.find().sort('-createdAt')
+        const popularPosts = await Posts.find().limit(5).sort('-views')
 
         if(!posts){
             return res.json({message: 'Статьи отстуствуют!'})
         }
 
         res.json({posts, popularPosts});
+    } catch (error) {
+        res.json({message: 'Что-то пошло не так...'})
+    }
+}
+
+export const getById = async(req, res) => {
+    try {
+        
+        const post = await Posts.findOneAndUpdate(req.params.id, {
+            $inc: {views: 1}
+        })
+
+        res.json(post)
+        
     } catch (error) {
         res.json({message: 'Что-то пошло не так...'})
     }

@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.static('uploads'));
 
 app.use('/api/auth', authRouter)
-app.use('/api/post', postRouter);
+app.use('/api/posts', postRouter);
 
 
 async function start(){

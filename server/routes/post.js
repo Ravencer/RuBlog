@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { checkToken } from '../utils/checkToken.js'
-import { createPost, getAll } from '../controllers/posts.js'
+import { createPost, getAll, getById } from '../controllers/posts.js'
 
 const router = new Router()
 
@@ -8,7 +8,10 @@ const router = new Router()
 router.post('/', checkToken, createPost);
 
 //Получение всех статей
-router.get('/posts', getAll);
+router.get('/', getAll);
+
+//Получение статей пользователя
+router.get('/:id', getById);
 
 
 export default router

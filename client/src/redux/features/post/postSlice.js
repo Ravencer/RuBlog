@@ -10,7 +10,7 @@ const initialState = {
 
 export const createPost = createAsyncThunk('post/createPost', async(params) => {
     try {
-        const {data} = await  axios.post('/post', params);
+        const {data} = await  axios.post('/posts', params);
         return data;
     } catch (error) {
         console.log(error);
@@ -49,12 +49,11 @@ export const postSlice = createSlice({
           })
         //Получение статей
           .addCase(getAllPosts.pending, (state) => {
-            state.loading = true;
-            state.status = null;
+            state.loading = true
           })
           .addCase(getAllPosts.fulfilled, (state, action) => {
-            state.loading = false;
-            state.posts = action.payload.posts;
+            state.loading = false
+            state.posts = action.payload.posts
             state.popularPosts = action.payload.popularPosts
           })
           .addCase(getAllPosts.rejected, (state) => {
