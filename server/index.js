@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import fileUpload from 'express-fileupload'
 
 import authRouter from './routes/auth.js'
 import postRouter from './routes/post.js'
@@ -16,7 +17,9 @@ const DB_PORT = process.env.DB_PORT || 30001
 
 
 app.use(cors());
+app.use(fileUpload());
 app.use(express.json());
+app.use(express.static('uploads'));
 
 app.use('/api/auth', authRouter)
 app.use('/api/post', postRouter);

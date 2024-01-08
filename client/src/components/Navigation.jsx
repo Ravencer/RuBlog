@@ -21,8 +21,8 @@ export const Navigation = () => {
 
   return (
     <div className='flex py-4 justify-between items-center'>
-        <span className='flex justify-center items-center w-6 h-6 bg-orange-300 text-sm text-lime-700 rounded-sm'>
-          E
+        <span className='flex justify-center items-center w-16 h-12 bg-orange-300 text-sm text-lime-700 rounded-sm'>
+          RuBlog
         </span>
 
         {

@@ -17,18 +17,18 @@ const PostSchema = new mongoose.Schema(
             type: String,
             default: ''
         }],
-        Views: {
+        views: {
             type: Number,
             default: 0
         },
-        Author: {
+        author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Users'
         },
-        Comments: {
+        comments: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comments'
-        }
+        }]
     },
     {timestamps: true}
 );

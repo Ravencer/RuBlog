@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 
 export const createPost = async (req, res) => {
     try{
-        const {title, text} = req.body;
+        const {headline, text} = req.body;
         const user = await Users.findById(req.userId);
 
         if(req.files){
@@ -15,7 +15,7 @@ export const createPost = async (req, res) => {
 
             const newPostWithImage = new Posts({
                 username: user.username,
-                title,
+                headline,
                 text,
                 imgUrl: fileName,
                 author: req.userId
@@ -24,12 +24,12 @@ export const createPost = async (req, res) => {
             await Users.findByIdAndUpdate(req.userId, {
                 $push: {posts: newPostWithImage},
             })
-            return res.json(newPostWithImage);
+            return res.json({newPostWithImage, message: 'Успешно!'});
         }
 
         const newPost = new Posts({
             username: user.username,
-            title,
+            headline,
             text,
             imgUrl: '',
             author: req.userId
@@ -40,9 +40,25 @@ export const createPost = async (req, res) => {
             $push: {posts: newPost}
         })
 
-        res.json(newPost);
+        res.json({newPost, message: 'Успешно!'});
     }
     catch(err){
+        console.log(err);
+        res.json({message: 'Что-то пошло не так...'})
+    }
+}
+
+export const getAll = async(req, res) => {
+    try {
+        const posts = await Posts.find().sort('-createdAt');
+        const popularPosts = await Posts.find().limit(5).sort('-views');
+
+        if(!posts){
+            return res.json({message: 'Статьи отстуствуют!'})
+        }
+
+        res.json({posts, popularPosts});
+    } catch (error) {
         res.json({message: 'Что-то пошло не так...'})
     }
 }

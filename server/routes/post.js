@@ -1,11 +1,14 @@
 import {Router} from 'express'
 import { checkToken } from '../utils/checkToken.js'
-import { createPost } from '../controllers/posts.js'
+import { createPost, getAll } from '../controllers/posts.js'
 
 const router = new Router()
 
-//Создание поста
+//Создание статьи
 router.post('/', checkToken, createPost);
+
+//Получение всех статей
+router.get('/posts', getAll);
 
 
 export default router
