@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import {toast} from 'react-toastify'
-import {useDispatch, useSelector} from 'react-redux'
+import React, {useState} from 'react'
+
+import {useDispatch} from 'react-redux'
 import { createPost } from '../redux/features/post/postSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,16 +8,9 @@ export const CreatePost = () => {
   const [headline, setTitle] = useState('');
   const [text, setText] = useState('');
   const [image, setImage] = useState('');
-  const { status } = useSelector((state) => state.post)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (status) {
-        toast(status)
-        navigate('/')
-    }
-}, [status, navigate])
 
   const submitHandler = () => {
     try {
@@ -26,6 +19,7 @@ export const CreatePost = () => {
       data.append('text', text);
       data.append('image', image);
       dispatch(createPost(data));
+      navigate('/')
     } catch (error) {
       console.log(error);
     }
