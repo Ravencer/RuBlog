@@ -51,7 +51,7 @@ export const postSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        //Регистрация
+        //Создание статьи
           .addCase(createPost.pending, (state) => {
             state.loading = true;
             state.status = null;

@@ -6,10 +6,12 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate, useParams} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { removePost } from '../redux/features/post/postSlice'
+import { createComment } from '../redux/features/comment/commentSlice'
 import {toast} from 'react-toastify'
 
 export const Post = () => {
   const [post, setPost] = useState(null);
+  const [comment, setComment] = useState('');
 
   const {user} = useSelector((state) => state.auth);
   const params = useParams();
@@ -41,6 +43,16 @@ export const Post = () => {
             Загрузка...
         </div>
     )
+  }
+
+  const submitHandler = () => {
+    try {
+      const postId = params.id;
+      dispatch(createComment({postId, comment}))
+      setComment('');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -98,8 +110,20 @@ export const Post = () => {
               }
           </div>
         </div>
-        <div className="w-1/3 ">
-          Comments
+        <div className="w-1/3 p-8 bg-orange-200 flex flex-col gap-2 rounded-sm">
+          <form className='flex gap-2' onSubmit={e => e.preventDefault()}>
+            <input type="text"
+            value={comment}
+            onChange={e => setComment(e.target.value)} 
+            placeholder='Ваш комментарий'
+            className='text-lime-700 w-full rounded-sm bg-orange-300 border py-2 px-2 text-sm outline-none placeholder:text-black'
+            />
+            <button type='submit'
+            onClick={submitHandler}
+            className='flex justify-center items-center bg-orange-300 text-lime-700 text-sm rounded-sm py-2 px-4'>
+              Опубликовать
+            </button>
+          </form>
         </div>
       </div>
     </div>
