@@ -6,13 +6,16 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate, useParams} from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { removePost } from '../redux/features/post/postSlice'
-import { createComment } from '../redux/features/comment/commentSlice'
+import { createComment, getPostComments } from '../redux/features/comment/commentSlice'
 import {toast} from 'react-toastify'
+import CommentItem from '../components/CommentItem'
 
 export const Post = () => {
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState('');
 
+
+  const {comments} = useSelector((state) => state.comment);
   const {user} = useSelector((state) => state.auth);
   const params = useParams();
   const dispatch = useDispatch();
@@ -33,9 +36,22 @@ export const Post = () => {
     setPost(data);
   }, [params.id])
 
+  const fetchComments = useCallback( async () => {
+    try {
+      dispatch(getPostComments(params.id));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [dispatch, params.id]);
+
+
   useEffect(() => {
     fetchPost();
   }, [fetchPost])
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments])
 
   if(!post){
     return (
@@ -54,6 +70,7 @@ export const Post = () => {
       console.log(error);
     }
   }
+
 
   return (
     <div>
@@ -111,19 +128,31 @@ export const Post = () => {
           </div>
         </div>
         <div className="w-1/3 p-8 bg-orange-200 flex flex-col gap-2 rounded-sm">
-          <form className='flex gap-2' onSubmit={e => e.preventDefault()}>
-            <input type="text"
-            value={comment}
-            onChange={e => setComment(e.target.value)} 
-            placeholder='Ваш комментарий'
-            className='text-lime-700 w-full rounded-sm bg-orange-300 border py-2 px-2 text-sm outline-none placeholder:text-black'
-            />
-            <button type='submit'
-            onClick={submitHandler}
-            className='flex justify-center items-center bg-orange-300 text-lime-700 text-sm rounded-sm py-2 px-4'>
-              Опубликовать
-            </button>
-          </form>
+        {
+                user?._id && (
+              <form className='flex gap-2' onSubmit={e => e.preventDefault()}>
+                <input type="text"
+                value={comment}
+                onChange={e => setComment(e.target.value)} 
+                placeholder='Ваш комментарий'
+                className='text-lime-700 w-full rounded-sm bg-orange-300 border py-2 px-2 text-sm outline-none placeholder:text-black'
+                />
+                
+                <button type='submit'
+                onClick={submitHandler}
+                className='flex justify-center items-center bg-orange-300 text-lime-700 text-sm rounded-sm py-2 px-4'>
+                  Опубликовать
+                </button>
+              </form>
+
+                )
+        }
+          
+          {
+            comments?.map((comment) => (
+              <CommentItem key={comment._id} comment={comment} />
+            ))
+          }
         </div>
       </div>
     </div>

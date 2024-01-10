@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { checkToken } from '../utils/checkToken.js'
-import { createPost, getAll, getById, getMyPosts, removePost, updatePost } from '../controllers/posts.js'
+import { createPost, getAll, getById, getMyPosts, removePost, updatePost, getPostsComments } from '../controllers/posts.js'
 
 const router = new Router()
 
@@ -21,6 +21,9 @@ router.delete('/:id', checkToken, removePost);
 
 //Редактирование статей
 router.put('/:id', checkToken, updatePost);
+
+//Получение комментариев статьи
+router.get('/comments/:id', getPostsComments);
 
 
 export default router

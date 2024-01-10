@@ -1,5 +1,6 @@
 import Posts from '../models/Posts.js'
 import Users from '../models/Users.js'
+import Comments from '../models/Comments.js'
 import path, {dirname} from 'path'
 import { fileURLToPath } from 'url'
 
@@ -133,6 +134,24 @@ export const updatePost = async(req, res) => {
 
         await post.save();
         res.json(post);
+        
+    } catch (error) {
+        console.log(error)
+        res.json({message: 'Что-то пошло не так...'})
+    }
+}
+
+export const getPostsComments = async(req, res) => {
+    try {
+        
+        const post = await Posts.findById(req.params.id);
+        const list = await Promise.all(
+            post.comments.map((comment) => {
+                return Comments.findById(comment)
+            })
+        )
+
+        res.json(list);
         
     } catch (error) {
         console.log(error)

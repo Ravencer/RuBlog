@@ -18,6 +18,16 @@ export const createComment = createAsyncThunk('comment/createComment', async ({p
     }
 })
 
+export const getPostComments = createAsyncThunk('comment/getPostComments', async (postId) => {
+  try {
+      
+    const {data} = await axios.get(`/posts/comments/${postId}`);
+    return data;
+  } catch (error) {
+      console.log(error);
+  }
+})
+
 export const commentSlice = createSlice({
     name: 'comment',
     initialState,
@@ -33,6 +43,17 @@ export const commentSlice = createSlice({
             state.comments.push(action.payload);
           })
           .addCase(createComment.rejected, (state, action) => {
+            state.loading = false;
+          })
+          //Получение комментариев
+          .addCase(getPostComments.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getPostComments.fulfilled, (state, action) => {
+            state.loading = false;
+            state.comments = action.payload;
+          })
+          .addCase(getPostComments.rejected, (state, action) => {
             state.loading = false;
           })
         }
